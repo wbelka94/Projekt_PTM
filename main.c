@@ -2,7 +2,7 @@
 #include "stm32f30x_gpio.h"
 #include "stm32f30x_rcc.h"
 #include "stm32f30x_usart.h"
-
+#include "driving.h"
 
 void init_USART()
 {
@@ -41,8 +41,6 @@ void init_USART()
 	// konfiguracja
 	USART_Init(USART2, &USART_InitStructure);
 }
-
-
 
 int main(void)
 {
@@ -85,6 +83,10 @@ int main(void)
     	Delay_ms(500);
     	    	GPIO_SetBits(GPIOE,GPIO_Pin_12 | GPIO_Pin_13);
     	*/
+
+		drive_forward();
+		Delay_ms(500);
+		drive_backward(2000);
 
     }
 }
