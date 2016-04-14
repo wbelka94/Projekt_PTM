@@ -17,17 +17,17 @@ void init_USART()
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	// konfiguracja linii Rx
 	GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_2);
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	USART_InitTypeDef USART_InitStructure;
 	// predkosc transmisji (mozliwe standardowe opcje: 9600, 19200, 38400, 57600, 115200, ...)
-	USART_InitStructure.USART_BaudRate = 115200;
+	USART_InitStructure.USART_BaudRate = 9600;
 	// d³ugoœæ s³owa (USART_WordLength_8b lub USART_WordLength_9b)
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
 	// liczba bitów stopu (USART_StopBits_1, USART_StopBits_0_5, USART_StopBits_2, USART_StopBits_1_5)
@@ -44,6 +44,7 @@ void init_USART()
 
 }
 
+
 int main(void)
 {
 	SystemInit();
@@ -54,12 +55,21 @@ int main(void)
 	init_USART();
 	// wlaczenie ukladu USART
 	USART_Cmd(USART2, ENABLE);
-	LEFT_FORWARD;
-	RIGHT_FORWARD;
+	//LEFT_FORWARD;
+	//RIGHT_FORWARD;
 	while(1){
 		drive_forward();
 		Delay_ms(500);
-		drive_backward();
+		drive_backward();*/
+
 		Delay_ms(500);
+		LEFT_FORWARD;
+		while(USART_GetFlagStatus(USART3, USART_FLAG_TXE) == RESET);
+		// wyslanie danych
+		USART_SendData(USART3, 'A');
+		// czekaj az dane zostana wyslane
+		while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
+		Delay_ms(500);
+		LEFT_BACKWARD;
     }
 }
