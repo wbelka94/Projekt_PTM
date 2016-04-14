@@ -39,9 +39,7 @@ void init_USART()
 	// tryb nadawania/odbierania (USART_Mode_Rx, USART_Mode_Rx )
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 	// konfiguracja
-	USART_Init(USART3, &USART_InitStructure);
-
-
+	USART_Init(USART2, &USART_InitStructure);
 }
 
 
@@ -64,15 +62,15 @@ int main(void)
 		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11| GPIO_Pin_12| GPIO_Pin_13 |  GPIO_Pin_14;
 		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 		GPIO_Init(GPIOE, &GPIO_InitStructure);
-		GPIO_SetBits(GPIOE,GPIO_Pin_11 | GPIO_Pin_14);
-		    	GPIO_ResetBits(GPIOE,GPIO_Pin_12 | GPIO_Pin_13);
 
 		init_USART();
 		// wlaczenie ukladu USART
-		USART_Cmd(USART3, ENABLE);
+		USART_Cmd(USART2, ENABLE);
 		unsigned int i;
+		uint8_t a=0;
     while(1)
     {
+    	/*
     	//for(i=0;i<5000000;i++);
     	Delay_ms(500);
     	GPIO_ResetBits(GPIOE,GPIO_Pin_12 | GPIO_Pin_13);
@@ -86,5 +84,7 @@ int main(void)
     	//for(i=0;i<1000000;i++);
     	Delay_ms(500);
     	    	GPIO_SetBits(GPIOE,GPIO_Pin_12 | GPIO_Pin_13);
+    	*/
+
     }
 }
