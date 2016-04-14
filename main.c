@@ -57,9 +57,9 @@ int main(void)
 	LEFT_FORWARD;
 	RIGHT_FORWARD;
 	while(1){
-		/*drive_forward();
+		drive_forward();
 		Delay_ms(500);
 		drive_backward();
-		Delay_ms(500);*/
+		Delay_ms(500);
     }
 }
