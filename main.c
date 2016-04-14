@@ -49,13 +49,17 @@ int main(void)
 	SystemInit();
 
 	Delay_init();
+	driving_init();
 
 	init_USART();
 	// wlaczenie ukladu USART
 	USART_Cmd(USART3, ENABLE);
+	LEFT_FORWARD;
+	RIGHT_FORWARD;
 	while(1){
-		drive_forward();
+		/*drive_forward();
 		Delay_ms(500);
-		drive_backward(2000);
+		drive_backward();
+		Delay_ms(500);*/
     }
 }

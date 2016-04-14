@@ -5,8 +5,7 @@ void driving_init(){
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11| GPIO_Pin_12| GPIO_Pin_13 |  GPIO_Pin_14;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_Init(GPIOE, &GPIO_InitStructure);
-	GPIO_SetBits(GPIOE,GPIO_Pin_11 | GPIO_Pin_14);
-	GPIO_ResetBits(GPIOE,GPIO_Pin_12 | GPIO_Pin_13);
+
 }
 
 void drive_forward(){
