@@ -39,7 +39,7 @@ void init_USART()
 	// tryb nadawania/odbierania (USART_Mode_Rx, USART_Mode_Rx )
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 	// konfiguracja
-	USART_Init(USART3, &USART_InitStructure);
+	USART_Init(USART2, &USART_InitStructure);
 
 
 }
@@ -53,7 +53,7 @@ int main(void)
 
 	init_USART();
 	// wlaczenie ukladu USART
-	USART_Cmd(USART3, ENABLE);
+	USART_Cmd(USART2, ENABLE);
 	LEFT_FORWARD;
 	RIGHT_FORWARD;
 	while(1){
