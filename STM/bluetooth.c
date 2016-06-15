@@ -1,8 +1,5 @@
-#include "stm32f30x_comp.h"
-#include "stm32f30x_gpio.h"
-#include "stm32f30x_rcc.h"
-#include "stm32f30x_usart.h"
-#include "driving.h"
+#include "bluetooth.h"
+
 
 void init_USART()
 {
@@ -12,7 +9,7 @@ void init_USART()
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 
 	// konfiguracja linii Tx
-	GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_2);
+	GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_7);
 	GPIO_InitTypeDef GPIO_InitStructure;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
@@ -21,7 +18,7 @@ void init_USART()
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	// konfiguracja linii Rx
-	GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_2);
+	GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_7);
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
@@ -40,36 +37,18 @@ void init_USART()
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 	// konfiguracja
 	USART_Init(USART2, &USART_InitStructure);
-
-
 }
 
-
-int main(void)
+uint8_t usartGetChar(void)
 {
-	SystemInit();
+	// czekaj na odebranie danych
+	while (USART_GetFlagStatus(USART2, USART_FLAG_RXNE) == RESET);
+	return USART_ReceiveData(USART2);
+}
 
-	Delay_init();
-	driving_init();
-
-	init_USART();
-	// wlaczenie ukladu USART
-	USART_Cmd(USART2, ENABLE);
-	//LEFT_FORWARD;
-	//RIGHT_FORWARD;
-	while(1){
-		drive_forward();
-		Delay_ms(500);
-		drive_backward();*/
-
-		Delay_ms(500);
-		LEFT_FORWARD;
-		while(USART_GetFlagStatus(USART3, USART_FLAG_TXE) == RESET);
-		// wyslanie danych
-		USART_SendData(USART3, 'A');
-		// czekaj az dane zostana wyslane
-		while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-		Delay_ms(500);
-		LEFT_BACKWARD;
-    }
+uint8_t usartSendChar(char a)
+{
+	while(USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
+	USART_SendData(USART2, a);
+	while (USART_GetFlagStatus(USART2, USART_FLAG_TC) == RESET);
 }
